@@ -295,11 +295,15 @@ namespace CG {
 	}
 
 	void TextBox::setLabel(string label) {
+		this->setEntry(label);
+	}
+
+
+	void TextBox::setEntry(string label) {
 		_currentEntry = label;
 		_lastEntry = label;
 		_setDisplayedString(label);
 	}
-
 
 	void TextBox::_submitEntry(void) {
 		_lastEntry = _currentEntry;

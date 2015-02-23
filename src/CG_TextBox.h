@@ -17,6 +17,7 @@ namespace CG {
 
 		void setFont(ofTrueTypeFont *font) override;
 		void setLabel(string label); //This should be renamed to setEntry
+		void setEntry(std::string entry);
 		string getEntry(void) { return _currentEntry; };
 
 		CG::ControlType getType(void) const override { return CG::ControlType::TEXT_BOX; };
