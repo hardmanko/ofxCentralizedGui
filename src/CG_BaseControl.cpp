@@ -214,4 +214,8 @@ namespace CG {
 		_callback = cb;
 	}
 
+	ofTrueTypeFont* BaseControl::getFont(void) {
+		return this->textFont;
+	}
+
 }

@@ -48,6 +48,10 @@ void Manager::setDelimiter(std::string delim) {
 	_groupDelimiter = delim;
 }
 
+std::string Manager::getDelimiter(void) {
+	return _groupDelimiter;
+}
+
 void Manager::pollEvents(void) {
 	glfwPollEvents();
 }

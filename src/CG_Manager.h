@@ -38,6 +38,7 @@ namespace CG {
 		~Manager();
 
 		void setDelimiter(std::string delim);
+		std::string getDelimiter(void);
 		void setDefaultFont(std::string fontName, int fontSize, bool antialiased, bool fullCharSet, float simplifyAmount, int dpi);
 
 		void pollEvents(void);
@@ -51,6 +52,7 @@ namespace CG {
 		template <typename T> T& createControl(ofRectangle thisBB, std::string name, std::string groups = "");
 
 		template <typename T> T& createControl(float spacing, Dir directionFromBB, ofRectangle otherBB, std::string name, std::string groups, float width, float height);
+		template <typename T> T& createControl(float spacing, Dir directionFromBB, ofRectangle otherBB, std::string name, std::string groups);
 		template <typename T> T& createControl(Dir directionFromBB, ofRectangle otherBB, std::string name, std::string groups, float width, float height);
 		template <typename T> T& createControl(Dir directionFromBB, ofRectangle otherBB, std::string name, std::string groups);
 
@@ -178,6 +180,12 @@ namespace CG {
 
 	}
 
+	template <typename T> 
+	T& Manager::createControl(float spacing, Dir directionFromBB, ofRectangle otherBB, std::string name, std::string groups) {
+		ofRectangle lastBB = getLastControl().getBoundingBox();
+		return createControl<T>(spacing, directionFromBB, otherBB, name, groups, lastBB.width, lastBB.height);
+	}
+
 	template <typename T>
 	T& Manager::createControl(Dir directionFromBB, ofRectangle otherBB, std::string name, std::string groups, float width, float height) {
 		return createControl<T>(_lastControlSpacing, directionFromBB, otherBB, name, groups, width, height);
@@ -188,8 +196,6 @@ namespace CG {
 		ofRectangle lastBB = getLastControl().getBoundingBox();
 		return createControl<T>(_lastControlSpacing, directionFromBB, otherBB, name, groups, lastBB.width, lastBB.height);
 	}
-
-
 
 	template <typename T> 
 	T& Manager::createControl(float spacing, Dir directionFromLast, std::string name, std::string groups, float width, float height) {

@@ -84,6 +84,8 @@ namespace CG {
 
 		void notifyControlNeedsRedraw(void);
 
+		ofTrueTypeFont* getFont(void);
+
 	protected:
 
 		ofRectangle boundingBox;
