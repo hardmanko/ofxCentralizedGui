@@ -41,7 +41,7 @@ Manager::~Manager (void) {
 
 //The default font is assigned to all new created controls.
 void Manager::setDefaultFont(std::string fontName, int fontSize, bool antialiased, bool fullCharSet, float simplifyAmount, int dpi) {
-	_defaultFont.loadFont(OF_TTF_SANS, 10, antialiased, fullCharSet, true, simplifyAmount, dpi);
+	_defaultFont.loadFont(OF_TTF_SANS, fontSize, antialiased, fullCharSet, true, simplifyAmount, dpi);
 }
 
 void Manager::setDelimiter(std::string delim) {

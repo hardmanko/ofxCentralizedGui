@@ -61,6 +61,8 @@ namespace CG {
 		template <typename T> T& createControl(float spacing, std::string name, std::string groups = "");
 
 		template <typename T> T& createControl(std::string name, std::string groups = "");
+		template <typename T> T& createControl(std::string name, std::string groups, float width, float height);
+
 		template <typename T> T& createControl(Dir directionFromLast, std::string name, std::string groups = "");
 		template <typename T> T& createControl(Dir directionFromLast, std::string name, std::string groups, float width, float height);
 
@@ -217,6 +219,11 @@ namespace CG {
 	template <typename T> 
 	T& Manager::createControl(std::string name, std::string groups) {
 		return createControl<T>(Dir::USE_PREVIOUS_DIRECTION, name, groups);
+	}
+
+	template <typename T> 
+	T& Manager::createControl(std::string name, std::string groups, float width, float height) {
+		return createControl<T>(Dir::USE_PREVIOUS_DIRECTION, name, groups, width, height);
 	}
 
 	template <typename T> 
