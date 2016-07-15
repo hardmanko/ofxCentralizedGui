@@ -144,7 +144,7 @@ namespace CG {
 			_clearHighlight();
 			break;
 		case OF_KEY_RIGHT:
-			if (_cursorCharacterIndex < _currentEntry.size()) {
+			if (_cursorCharacterIndex < (int)_currentEntry.size()) {
 				++_cursorCharacterIndex;
 			}
 			_setDisplayedString(_currentEntry);
@@ -154,7 +154,7 @@ namespace CG {
 
 
 			if (_highlightedChars.length == 0) {
-				if ((_cursorCharacterIndex > 0) && (_currentEntry.size() >= _cursorCharacterIndex - 1)) {
+				if ((_cursorCharacterIndex > 0) && ((int)_currentEntry.size() >= _cursorCharacterIndex - 1)) {
 					_currentEntry.erase(_currentEntry.begin() + _cursorCharacterIndex - 1);
 					--_cursorCharacterIndex;
 				}

@@ -1,6 +1,6 @@
 #pragma once
 
-//#include "ofMain.h"
+#include "ofMain.h"
 #include "ofColor.h"
 #include "ofRectangle.h"
 #include "ofTrueTypeFont.h"

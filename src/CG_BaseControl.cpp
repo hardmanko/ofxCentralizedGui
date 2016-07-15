@@ -55,7 +55,7 @@ namespace CG {
 		if (textFont != nullptr) {
 			textFont->drawStringAsShapes(s, x, y);
 		} else {
-			cout << "font pointer is NULL" << endl;
+			cout << "Error: font pointer is NULL" << endl;
 		}
 	}
 
@@ -63,7 +63,7 @@ namespace CG {
 		if (textFont != NULL) {
 			return textFont->getStringBoundingBox(s, x, y);
 		}
-		cout << "font pointer is NULL" << endl;
+		cout << "Error: font pointer is NULL" << endl;
 		return ofRectangle();
 	}
 
