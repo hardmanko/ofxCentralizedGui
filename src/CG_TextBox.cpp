@@ -286,7 +286,6 @@ namespace CG {
 
 	void TextBox::setFont(ofTrueTypeFont *font) {
 		textFont = font;
-		textFont->setSpaceSize(1);
 
 		_lineHeight = ceil(textFont->getSize() * 1.5); //TODO: Make this work with font sizes other than 12
 		//boundingBox.height = textFont->getSize() + 6;
