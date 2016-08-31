@@ -39,7 +39,9 @@ namespace CG {
 
 		void setDelimiter(std::string delim);
 		std::string getDelimiter(void);
+
 		void setDefaultFont(std::string fontName, int fontSize, bool antialiased, bool fullCharSet, float simplifyAmount, int dpi);
+		ofTrueTypeFont& getDefaultFont(void);
 
 		void pollEvents(void);
 		int availableInteractions(void);

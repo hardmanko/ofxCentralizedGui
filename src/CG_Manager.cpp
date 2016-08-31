@@ -44,6 +44,10 @@ void Manager::setDefaultFont(std::string fontName, int fontSize, bool antialiase
 	_defaultFont.loadFont(OF_TTF_SANS, fontSize, antialiased, fullCharSet, true, simplifyAmount, dpi);
 }
 
+ofTrueTypeFont& Manager::getDefaultFont(void) {
+	return _defaultFont;
+}
+
 void Manager::setDelimiter(std::string delim) {
 	_groupDelimiter = delim;
 }
