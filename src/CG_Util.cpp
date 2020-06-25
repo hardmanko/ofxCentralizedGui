@@ -88,6 +88,13 @@ namespace CG {
 		return c;
 	}
 
+	bool isModifierKey(int c) {
+		return (c & OF_KEY_CONTROL) == OF_KEY_CONTROL ||
+			(c & OF_KEY_ALT) == OF_KEY_ALT ||
+			(c & OF_KEY_SHIFT) == OF_KEY_SHIFT ||
+			(c & OF_KEY_SUPER) == OF_KEY_SUPER;
+	}
+
 
 	ofRectangle getGroupBoundingBox(const std::vector<BaseControl*>& controls) {
 		if (controls.size() == 0) {
@@ -105,7 +112,7 @@ namespace CG {
 		return inclusiveBoundingBox;
 	}
 
-	vector<string> splitGroupString(string groupNames, string delimiter) {
+	std::vector<std::string> splitGroupString(std::string groupNames, std::string delimiter) {
 		return ofSplitString(groupNames, delimiter, true, true);
 	}
 

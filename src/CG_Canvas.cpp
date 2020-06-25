@@ -76,6 +76,18 @@ namespace CG {
 		setPixel(xPos, yPos, col.r, col.g, col.b, col.a);
 	}
 
+	ofColor Canvas::getPixel(int xPos, int yPos) {
+		int startPos = (yPos * boundingBox.width + xPos) * 4;
+
+		ofColor rval;
+		rval.r = _data[startPos + 0];
+		rval.g = _data[startPos + 1];
+		rval.b = _data[startPos + 2];
+		rval.a = _data[startPos + 3];
+
+		return rval;
+	}
+
 	void Canvas::setPixelAbsolute(int xPos, int yPos, unsigned char r, unsigned char g, unsigned char b, unsigned char alpha) {
 		setPixel(xPos - boundingBox.x, yPos - boundingBox.y, r, g, b, alpha);
 	}

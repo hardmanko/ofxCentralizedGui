@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "ofRectangle.h"
 
 typedef enum {
@@ -28,8 +30,9 @@ namespace CG {
 
 	int getShiftedChar(int c);
 	bool isShiftableChar(int c);
+	bool isModifierKey(int c);
 
-	vector<string> splitGroupString(string groupNames, string delimiter);
+	std::vector<std::string> splitGroupString(std::string groupNames, std::string delimiter);
 
 	//ofRectangle getGroupBoundingBox(const std::vector<BaseControl*>& controls);
 }

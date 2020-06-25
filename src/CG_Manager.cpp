@@ -9,7 +9,8 @@ Manager::Manager(void) :
 	_groupDelimiter(","),
 	_lastControlSpacing(3),
 	_lastControlDirection(Dir::DOWN),
-	_keyboardShortcutsEnabled(false)
+	_keyboardShortcutsEnabled(false),
+	_logNameOfHoveredControls(false)
 {
 	setDefaultFont(OF_TTF_SANS, 10, true, false, .3, 96);
 
@@ -76,7 +77,7 @@ std::queue<CG::InteractionResult> Manager::copyAllInteractions(void) const {
 
 void Manager::draw (void) {
 	std::vector<int> controlZOrders( _controls.size() );
-	for (int i = 0; i < _controls.size(); i++) {
+	for (size_t i = 0; i < _controls.size(); i++) {
 		//Put any active controls on the top of the z-order.
 		if (_controls[i]->isActive()) {
 			controlZOrders[i] = std::numeric_limits<int>::max();
@@ -87,7 +88,7 @@ void Manager::draw (void) {
 
 	std::vector<unsigned int> controlDrawOrder = _convertZOrderToDrawOrder(controlZOrders);
 
-	for (int i = 0; i < controlDrawOrder.size(); i++) {
+	for (size_t i = 0; i < controlDrawOrder.size(); i++) {
 		if (_controls[controlDrawOrder[i]]->isVisible()) {
 			_controls[controlDrawOrder[i]]->draw();
 		}
@@ -101,7 +102,7 @@ void Manager::moveControls (int xChange, int yChange) {
 void Manager::moveControlsInGroup(std::string group, int xChange, int yChange) {
 	std::vector<int> matchedControls = _getMatchedGroupIndices(group);
 
-	for (int i = 0; i < matchedControls.size(); i++) {
+	for (size_t i = 0; i < matchedControls.size(); i++) {
 		ofRectangle currentBB = _controls.at(matchedControls[i])->getBoundingBox();
 		currentBB.x += xChange;
 		currentBB.y += yChange;
@@ -114,6 +115,7 @@ void Manager::setGroupEdgeWidth(std::string groups, float edgeWidth) {
 }
 
 void Manager::setGroupZOrder(std::string groups, int zOrder) {
+	ofLogNotice("CG::Manager::setGroupZOrder") << "groups: " << groups << ", zOrder: " << zOrder;
 	this->applyFunction(groups, [&zOrder](BaseControl& c) { c.zOrder = zOrder; });
 }
 
@@ -141,7 +143,7 @@ void Manager::setGroupFont(std::string groups, ofTrueTypeFont *font) {
 /*! For the specified control group, sets the color component to the given color.
 \param controlGroup The name of the control group. 
 \param controlComponent The component of the controls to set the color to. The basic components that many 
-controls use are "text", "edge", "background", "hovered", and "disabled". Some control types may use other
+controls use are "prompt", "edge", "background", "hovered", and "disabled". Some control types may use other
 components. 
 \param color The color to set the component to. */
 void Manager::setGroupComponentColor(std::string groups, std::string controlComponent, ofColor color) {
@@ -149,6 +151,12 @@ void Manager::setGroupComponentColor(std::string groups, std::string controlComp
 		c.colors[controlComponent] = color;
 	};
 	this->applyFunction(groups, applyColor);
+}
+
+// zOrderChange is added to the zOrder for each of the controls in the group
+void Manager::changeGroupZOrder(std::string groups, int zOrderChange) {
+	ofLogNotice("CG::Manager::changeGroupZOrder") << "groups: " << groups << ", zOrderChange: " << zOrderChange;
+	this->applyFunction(groups, [&zOrderChange](BaseControl& c) { c.zOrder += zOrderChange; });
 }
 
 /*! Get a bounding box that is the smallest rectangle that contains all members of the named control group. */
@@ -159,7 +167,7 @@ ofRectangle Manager::getGroupBoundingBox(std::string controlGroup) {
 	if (matchedControls.size() >= 1) {
 		inclusiveBoundingBox = _controls.at( matchedControls[0] )->getBoundingBox();
 
-		for (int i = 1; i < matchedControls.size(); i++) {
+		for (size_t i = 1; i < matchedControls.size(); i++) {
 			CG::BaseControl* con = _controls.at(matchedControls[i]);
 
 			ofRectangle tbb = con->getBoundingBox();
@@ -197,26 +205,6 @@ void Manager::deleteControl(std::string controlName, std::string controlGroups) 
 		}
 	}
 
-	/*
-	vector<string> groups = BaseControl::splitGroupString(controlGroups, delim);
-
-	for (int i = 0; i < _controls.size(); i++) {
-		if (_controls[i]->name == controlName) {
-
-			//This is an optimization: hasGroups() should work the same.
-			bool hasAllGroups = true;
-			for (auto g : groups) {
-				hasAllGroups = hasAllGroups && _controls[i]->hasGroup(g);
-			}
-
-			if (hasAllGroups) {
-				_deleteControlAtIndex(i);
-				return;
-			}
-
-		}
-	}
-	*/
 }
 
 void Manager::_deleteControlAtIndex (int index) {
@@ -247,6 +235,18 @@ BaseControl& Manager::getControl(std::string controlName, std::string controlGro
 
 	std::string s = "Control not found. Purposes: " + controlName + ". Groups: " + controlGroups;
 	throw std::out_of_range(s.c_str());
+}
+
+bool Manager::controlExists(std::string name, std::string groups) {
+
+	std::vector<int> matchedControls = _getMatchedGroupIndices(groups);
+	for (int ci : matchedControls) {
+		if (_controls[ci]->name == name) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 std::vector<BaseControl*> Manager::getControls(std::string controlGroups) {
@@ -359,6 +359,12 @@ void Manager::mouseMovedEventHandler(ofMouseEventArgs &a) {
 		CG::InteractionResult result = _controls[maxZOrderIndex]->mouseMovedEvent(a.x, a.y);
 		result.control = _controls[maxZOrderIndex];
 		_controlInteractions.push(result);
+
+		if (_logNameOfHoveredControls) {
+			if (_controls[maxZOrderIndex]->wasEntered()) {
+				ofLogNotice("CG::Manager") << "Hovered control name: " << result.control->name << " and groups: " << result.control->getGroupString();
+			}
+		}
 	}
 
 }
@@ -468,6 +474,10 @@ void Manager::keyReleaseHandler(ofKeyEventArgs &a) {
 	}
 
 	//It seems like something else might happen here...
+}
+
+void Manager::logNameOfHoveredControls(bool log) {
+	_logNameOfHoveredControls = log;
 }
 
 

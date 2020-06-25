@@ -77,6 +77,9 @@ namespace CG {
 		virtual bool isHovered(void) const;
 		virtual bool isVisible(void) const;
 
+		virtual bool wasEntered(bool reset = true);
+		virtual bool wasExited(bool reset = true);
+
 		int zOrder;
 		float edgeWidth;
 
@@ -94,6 +97,8 @@ namespace CG {
 		void drawString(std::string s, int x, int y);
 		ofRectangle getStringBoundingBox(std::string s, int x = 0, int y = 0);
 
+		bool _wasEntered;
+		bool _wasExited;
 
 
 		void notifyCallback(void) {
@@ -115,18 +120,22 @@ namespace CG {
 		std::string _groupDelimiter;
 		NewDataCallbackType _callback;
 
-		//Shouldn't these be private, given that there are now getters and setters for them?
 		bool _controlActive;
 		bool _controlEnabled;
 		bool _controlHovered;
 		bool _controlVisible;
 	};
 
-}
+	struct LabeledControl : public BaseControl {
 
+		virtual void setLabel(std::string label);
+		virtual const std::string& getLabel(void) const;
 
+	protected:
 
+		std::string _label;
 
+	};
 
-
+} // namespace CG
 

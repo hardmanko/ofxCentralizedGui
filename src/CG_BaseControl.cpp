@@ -128,30 +128,36 @@ namespace CG {
 
 	void BaseControl::setActiveState(bool active) {
 		if (_controlActive != active) {
+			_controlActive = active;
 			notifyControlNeedsRedraw();
 		}
-		_controlActive = active;
 	}
 
 	void BaseControl::setEnabledState(bool enabled) {
 		if (_controlEnabled != enabled) {
+			_controlEnabled = enabled;
 			notifyControlNeedsRedraw();
 		}
-		_controlEnabled = enabled;
 	}
 
 	void BaseControl::setHoveredState(bool hovered) {
 		if (_controlHovered != hovered) {
+			if (hovered) { // if now hovered,
+				_wasEntered = true; // it was entered
+			} else {
+				_wasExited = true; // if not hovered, it was exited
+			}
+
+			_controlHovered = hovered;
 			notifyControlNeedsRedraw();
 		}
-		_controlHovered = hovered;
 	}
 
 	void BaseControl::setVisibleState(bool visible) {
 		if (_controlVisible != visible) {
+			_controlVisible = visible;
 			notifyControlNeedsRedraw();
 		}
-		_controlVisible = visible;
 	}
 
 	bool BaseControl::isActive(void) const {
@@ -168,6 +174,22 @@ namespace CG {
 
 	bool BaseControl::isVisible(void) const {
 		return _controlVisible;
+	}
+
+	bool BaseControl::wasEntered(bool reset) {
+		bool rval = _wasEntered;
+		if (reset) {
+			_wasEntered = false;
+		}
+		return rval;
+	}
+
+	bool BaseControl::wasExited(bool reset) {
+		bool rval = _wasExited;
+		if (reset) {
+			_wasExited = false;
+		}
+		return rval;
 	}
 
 	void BaseControl::notifyControlNeedsRedraw(void) {
@@ -216,6 +238,18 @@ namespace CG {
 
 	ofTrueTypeFont* BaseControl::getFont(void) {
 		return this->textFont;
+	}
+
+	////////////////////
+	// LabeledControl //
+	////////////////////
+	void LabeledControl::setLabel(std::string label) {
+		_label = label;
+		notifyControlNeedsRedraw();
+	}
+
+	const std::string& LabeledControl::getLabel(void) const {
+		return _label;
 	}
 
 }

@@ -131,7 +131,7 @@ namespace CG {
 	/*! For the specified control group, sets the color component to the given color.
 	\param controlGroup The name of the control group.
 	\param controlComponent The component of the controls to set the color to. The basic components that many
-	controls use are "text", "edge", "background", "hovered", and "disabled". Some control types may use other
+	controls use are "prompt", "edge", "background", "hovered", and "disabled". Some control types may use other
 	components.
 	\param color The color to set the component to. */
 	void ManagerContainer::setGroupComponentColor(string groups, string controlComponent, ofColor color) {

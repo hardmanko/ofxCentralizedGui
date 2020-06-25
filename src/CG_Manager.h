@@ -74,6 +74,7 @@ namespace CG {
 		BaseControl& getLastControl(void);
 		template <typename T> T& getControl(std::string name, std::string groups = "*");
 		BaseControl& getControl(std::string name, std::string groups = "*");
+		bool controlExists(std::string name, std::string groups = "*");
 
 		std::vector<BaseControl*> getControls(std::string groups);
 		std::vector<BaseControl*> getControls(CG::ControlType type);
@@ -94,6 +95,8 @@ namespace CG {
 		void setGroupFont(std::string groups, ofTrueTypeFont *font);
 		void setGroupComponentColor(std::string groups, string controlComponent, ofColor color);
 
+		void changeGroupZOrder(std::string groups, int zOrderChange);
+
 		ofRectangle getGroupBoundingBox(std::string groups);
 
 		void enableKeyboardShortcuts(bool enable);
@@ -108,6 +111,8 @@ namespace CG {
 
 		void keypressHandler(ofKeyEventArgs &a);
 		void keyReleaseHandler(ofKeyEventArgs &a);
+
+		void logNameOfHoveredControls(bool log);
 
 	private:
 
@@ -127,6 +132,8 @@ namespace CG {
 
 		ofTrueTypeFont _defaultFont;
 		ModifierKeyHeld _heldModifiers;
+
+		bool _logNameOfHoveredControls;
 
 		float _lastControlSpacing;
 		CG::Dir _lastControlDirection;

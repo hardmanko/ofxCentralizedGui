@@ -36,4 +36,20 @@ namespace CG {
 
 	};
 
+
+	// nest within one another
+	struct SharedContainer : public BaseControl, public std::enable_shared_from_this<SharedContainer> 
+	{
+
+		CG::ControlType getType(void) const override { return CG::ControlType::CONTAINER; };
+
+		template <typename Ctrl>
+		std::shared_ptr<Ctrl> newCtrl();
+
+	protected:
+
+		std::vector<std::shared_ptr<SharedContainer>> _children;
+
+	};
+
 }

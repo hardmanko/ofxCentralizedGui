@@ -39,11 +39,6 @@ namespace CG {
 		return result;
 	}
 
-	void Pushbutton::setLabel(string label) {
-		_label = label;
-		notifyControlNeedsRedraw();
-	};
-
 	void Pushbutton::setTextVerticalOffset(float offset) {
 		_textVerticalOffset = offset;
 		notifyControlNeedsRedraw();

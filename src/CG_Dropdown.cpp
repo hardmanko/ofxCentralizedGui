@@ -47,7 +47,7 @@ namespace CG {
 
 			//Draw each selection in the dropdown
 			ofSetColor(colors["text"]);
-			for (int i = 0; i < _selectionOptions.size(); ++i) {
+			for (size_t i = 0; i < _selectionOptions.size(); ++i) {
 				this->drawString(_selectionOptions.at(i).label,
 								 _dropdownBoxPosition.x + edgeWidth + TEXT_HORIZ_SPACING,
 								 _dropdownBoxPosition.y + ((i + 1) * _selectionLineHeight)
@@ -55,7 +55,7 @@ namespace CG {
 			}
 
 		} else {
-			//Draw the text that is shown in the dropdown box.
+			//Draw the prompt that is shown in the dropdown box.
 			ofSetColor(colors["text"]);
 			this->drawString(_displayedText,
 							 boundingBox.x + edgeWidth + TEXT_HORIZ_SPACING,
@@ -113,7 +113,7 @@ namespace CG {
 
 
 	int Dropdown::_getSelectionLineAtLocation(int mouseX, int mouseY) {
-		for (int currentLine = 0; currentLine < _selectionOptions.size(); ++currentLine) {
+		for (size_t currentLine = 0; currentLine < _selectionOptions.size(); currentLine++) {
 			if (mouseX > _dropdownBoxPosition.x &&
 				mouseX < _dropdownBoxPosition.x + _dropdownBoxPosition.width &&
 				mouseY > _dropdownBoxPosition.y + (currentLine * _selectionLineHeight) &&
@@ -173,7 +173,7 @@ namespace CG {
 	}
 
 	void Dropdown::setSelectedOption(int index) {
-		if (index < 0 || index >= _selectionOptions.size()) {
+		if (index < 0 || size_t(index) >= _selectionOptions.size()) {
 			_currentSelectionIndex = NOTHING_SELECTED;
 			_displayedText = _noSelectionText;
 			return;
@@ -205,9 +205,9 @@ namespace CG {
 	}
 
 	void Dropdown::setSelectedOptionById(int id) {
-		for (int i = 0; i < _selectionOptions.size(); i++) {
-			if (_selectionOptions.at(i).id == id) {
-				setSelectedOption(i);
+		for (size_t i = 0; i < _selectionOptions.size(); i++) {
+			if (_selectionOptions[i].id == id) {
+				setSelectedOption(int(i));
 				break;
 			}
 		}
@@ -215,9 +215,9 @@ namespace CG {
 	}
 
 	void Dropdown::setSelectedOption(std::string selectionLabel) {
-		for (int i = 0; i < _selectionOptions.size(); i++) {
-			if (_selectionOptions.at(i).label == selectionLabel) {
-				setSelectedOption(i);
+		for (size_t i = 0; i < _selectionOptions.size(); i++) {
+			if (_selectionOptions[i].label == selectionLabel) {
+				setSelectedOption(int(i));
 				break;
 			}
 		}
@@ -228,7 +228,7 @@ namespace CG {
 		setSelectedOption(NOTHING_SELECTED);
 	}
 
-	/*! This function does not change the current selection, it just changes what text is current shown. */
+	/*! This function does not change the current selection, it just changes what prompt is current shown. */
 	void Dropdown::setDisplayedText(string text) {
 		_displayedText = text;
 		if (textFont->isLoaded()) {
@@ -244,7 +244,7 @@ namespace CG {
 			return "Error: Nothing selected";
 		}
 
-		for (int i = 0; i < _selectionOptions.size(); ++i) {
+		for (size_t i = 0; i < _selectionOptions.size(); ++i) {
 			if (_selectionOptions.at(i).id == id) {
 				return _selectionOptions.at(i).label;
 			}
@@ -302,7 +302,7 @@ namespace CG {
 		_dropdownBoxPosition.height = availableSelections * _selectionLineHeight + (edgeWidth * 2);
 
 		float maxWidth = 0;
-		for (int i = 0; i < _selectionOptions.size(); i++) {
+		for (size_t i = 0; i < _selectionOptions.size(); i++) {
 			if (textFont->stringWidth(_selectionOptions[i].label) > maxWidth) {
 				maxWidth = textFont->stringWidth(_selectionOptions[i].label);
 			}

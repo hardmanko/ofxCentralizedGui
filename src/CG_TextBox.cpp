@@ -19,7 +19,7 @@ namespace CG {
 		_cursorXOffset(0)
 	{
 
-		ofSetEscapeQuitsApp(false); //esc (is/can be) used to cancel text entry.
+		ofSetEscapeQuitsApp(false); //esc (is/can be) used to cancel prompt entry.
 
 		_displayInfo.offset = 0;
 		_displayInfo.length = 0;
@@ -178,7 +178,7 @@ namespace CG {
 			}
 			break;
 		case OF_KEY_DEL:
-			if (_currentEntry.size() >= _cursorCharacterIndex) {
+			if ((int)_currentEntry.size() >= _cursorCharacterIndex) {
 				_currentEntry.erase(_currentEntry.begin() + _cursorCharacterIndex);
 			}
 			_setDisplayedString(_currentEntry);
@@ -190,7 +190,7 @@ namespace CG {
 			break;
 
 		default:
-			if (ev.key >= OF_KEY_MODIFIER) {
+			if (isModifierKey(ev.key)) {
 				break;
 			}
 

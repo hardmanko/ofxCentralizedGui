@@ -4,13 +4,12 @@
 
 namespace CG {
 
-	class Pushbutton : public BaseControl {
+	class Pushbutton : public LabeledControl {
 	public:
 		Pushbutton();
 
 		void draw(void) override;
 
-		void setLabel(string label);
 		void setTextVerticalOffset(float offset);
 
 		CG::InteractionResult mouseButtonEvent(const MouseButtonEvent &ev) override;
@@ -20,8 +19,6 @@ namespace CG {
 	private:
 
 		float _textVerticalOffset;
-
-		string _label;
 	};
 
 }

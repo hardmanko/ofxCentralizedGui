@@ -12,36 +12,19 @@ namespace CG {
 			_imageFormat(GL_RGBA)
 		{}
 
-		void setup(int msaaSamples, int format = GL_RGBA) {
-			_msaaSamples = msaaSamples;
-			_imageFormat = format;
-		}
+		void setup(int msaaSamples, int format = GL_RGBA);
 
-		void setBoundingBox(ofRectangle bb) override {
-			//Only reallocate if the size has changed
-			if ((boundingBox.width != bb.width) || (boundingBox.height != bb.height)) {
-				_fbo.allocate(bb.width, bb.height, _imageFormat, _msaaSamples);
-			}
+		virtual void setBoundingBox(ofRectangle bb) override;
 
-			boundingBox = bb;
-		}
+		virtual void draw(void) override;
 
-		void draw(void) override {
-			ofSetColor(255);
-			_fbo.draw(this->getBoundingBox().x, this->getBoundingBox().y);
-		}
-
-		void beginRendering(void) {
-			_fbo.begin();
-		}
-
-		void endRendering(void) {
-			_fbo.end();
-		}
+		void beginRendering(void);
+		// render your stuff
+		void endRendering(void);
 
 		CG::ControlType getType(void) const override { return CG::ControlType::FRAMEBUFFER; };
 
-	private:
+	protected:
 		ofFbo _fbo;
 
 		int _msaaSamples;

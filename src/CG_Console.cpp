@@ -98,7 +98,7 @@ namespace CG {
 	}
 
 	void Console::handleString(string s) {
-		for (int i = 0; i < s.size(); i++) {
+		for (size_t i = 0; i < s.size(); i++) {
 			handleChar(s[i]);
 		}
 	}
@@ -119,7 +119,7 @@ namespace CG {
 		ofSetColor(colors["text"]);
 
 		int location = 0;
-		for (int i = 0; i < _lineStrings.size(); i++) {
+		for (size_t i = 0; i < _lineStrings.size(); i++) {
 			drawString(_lineStrings[i], boundingBox.x + 10, boundingBox.y + (textFont->getSize() + 5) * (++location));
 		}
 	}
